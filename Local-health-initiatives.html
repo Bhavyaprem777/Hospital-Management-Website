@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Health Initiatives</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://cdn.wallpapersafari.com/15/54/xari2t.jpg'); /* Background image */
+            background-size: cover; /* Cover the entire page */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent tiling */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            height: 100vh; /* Full viewport height */
+        }
+
+        .container {
+            max-width: 800px; /* Decreased width */
+            width: 100%; /* Ensure it takes full width up to max-width */
+            padding: 20px;
+            background-color: white; /* Background color */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            text-align: center; /* Center text */
+        }
+
+        .initiative {
+            display: none; /* Initially hide all initiatives */
+        }
+
+        .initiative img {
+            max-width: 100%; /* Responsive image */
+            height: 350px; /* Fixed height for larger images */
+            object-fit: cover; /* Maintain aspect ratio */
+            border-radius: 8px; /* Rounded corners */
+            margin-top: 15px; /* Space above image */
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between; /* Space buttons */
+            margin-top: 20px; /* Space above buttons */
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Local Health Initiatives</h2>
+    
+    <div class="initiative" id="initiative1">
+        <h3>Health Education Workshops</h3>
+        <p>These workshops provide valuable information on topics such as nutrition, exercise, mental health, and chronic disease management. They are designed to empower community members with knowledge and skills to make informed health decisions.</p>
+        <img src="https://img.freepik.com/free-vector/medical-seminar-conference-with-doctors-meeting-room-medics-workshop-presentation-doctor-speaker_284092-1695.jpg?w=1060" alt="Health Education Workshops">
+    </div>
+
+    <div class="initiative" id="initiative2">
+        <h3>Community Health Fairs</h3>
+        <p>Our health fairs offer free health screenings, vaccinations, and resources. Local healthcare providers come together to provide essential services and education to community members, promoting preventive care.</p>
+        <img src="https://images.squarespace-cdn.com/content/v1/5cc4696b01232c500af663ba/1633462177687-4Q4XCILMCH75UGQIRV0M/Health+Fair+Poster.png" alt="Community Health Fairs">
+    </div>
+
+    <div class="initiative" id="initiative3">
+        <h3>Vaccination Drives</h3>
+        <p>We organize regular vaccination drives to ensure that all community members have access to essential vaccines, including those for flu, HPV, and COVID-19. These initiatives aim to increase vaccination rates and protect public health.</p>
+        <img src="https://tradebrains.in/wp-content/uploads/2020/07/answer-to-When-coronavirus-vaccine-will-be-available.jpg" alt="Vaccination Drives">
+    </div>
+
+    <div class="initiative" id="initiative4">
+        <h3>Mental Health Awareness Campaigns</h3>
+        <p>These campaigns promote mental well-being through educational materials, community events, and support groups. We aim to reduce stigma and provide resources for those in need of mental health support.</p>
+        <img src="https://sites.newpaltz.edu/news/wp-content/uploads/sites/24/2023/03/8df86124-c3f8-48f0-a757-61cc0cb80545f7f1d653-cfa0-4421-a240-06f64b8fea4e.jpg" alt="Mental Health Awareness Campaigns">
+    </div>
+
+    <div class="navigation">
+        <button class="prev" onclick="changeInitiative(-1)">&#10094; Prev</button>
+        <button class="next" onclick="changeInitiative(1)">Next &#10095;</button>
+    </div>
+</div>
+
+<script>
+    let currentInitiative = 0;
+    const initiatives = document.querySelectorAll('.initiative');
+
+    // Show the first initiative initially
+    initiatives[currentInitiative].style.display = 'block';
+
+    function changeInitiative(direction) {
+        initiatives[currentInitiative].style.display = 'none'; // Hide current initiative
+        currentInitiative += direction;
+
+        // Loop around the initiatives
+        if (currentInitiative >= initiatives.length) {
+            currentInitiative = 0;
+        } else if (currentInitiative < 0) {
+            currentInitiative = initiatives.length - 1;
+        }
+
+        initiatives[currentInitiative].style.display = 'block'; // Show new initiative
+    }
+</script>
+
+</body>
+</html>

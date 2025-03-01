@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaccine Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+            background-image: url('https://wallpaperaccess.com/full/1924546.jpg');
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            margin: auto;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #28a745;
+            color: white;
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Vaccine Details</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hospital Name</th>
+                    <th>Hospital Address</th>
+                    <th>Vaccination Date</th>
+                    <th>Vaccine Name</th>
+                    <th>Disease Prevented</th>
+                    <th>Dosage Info</th>
+                    <th>Symptoms</th>
+                    <th>Side Effects</th>
+                    <th>Age Group</th>
+                    <th>Vaccine Image</th>
+                </tr>
+            </thead>
+            <tbody id="vaccineData"></tbody>
+        </table>
+        <button onclick="window.location.href='vaccine-form.html'">Back to Form</button>
+    </div>
+
+    <script>
+        async function fetchVaccineDetails() {
+            try {
+                const response = await fetch("http://localhost:5000/api/vaccine-form-data");
+                const data = await response.json();
+
+                const tableBody = document.getElementById("vaccineData");
+                tableBody.innerHTML = "";
+
+                data.forEach(vaccine => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${vaccine.hospitalName}</td>
+                        <td>${vaccine.hospitalAddress}</td>
+                        <td>${new Date(vaccine.vaccinationDate).toLocaleDateString()}</td>
+                        <td>${vaccine.vaccineName}</td>
+                        <td>${vaccine.disease}</td>
+                        <td>${vaccine.dosage}</td>
+                        <td>${vaccine.symptoms}</td>
+                        <td>${vaccine.sideEffects || "N/A"}</td>
+                        <td>${vaccine.ageGroup}</td>
+                        <td>
+                            <img src="http://localhost:5000${vaccine.imageUrl}" alt="Vaccine Image" onerror="this.onerror=null; this.src='default-image.jpg';">
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching vaccine details:", error);
+            }
+        }
+
+        fetchVaccineDetails();
+    </script>
+</body>
+</html>

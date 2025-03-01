@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Services</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            text-align: center;
+            background: #f4f4f9;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slogan {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 30px;
+        }
+
+        /* Image Box */
+        .image-box {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* Flexbox Container */
+        .info-boxes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .box {
+            width: 38%; /* Makes sure 2 boxes fit per row */
+            padding: 20px;
+            margin: 10px 0;
+            background-color: #00796b;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .box:hover {
+            background-color: #004d40;
+            transform: scale(1.05);
+        }
+
+        /* Responsive: 1 box per row on smaller screens */
+        @media (max-width: 768px) {
+            .box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Hospital Services</h1>
+        <p class="slogan">Find hospitals, book appointments, and stay updated with health campaigns.</p>
+
+        <!-- Image Section -->
+        <div class="image-box">
+            <img src="https://cdn.systematic.com/media/g0sj1tbg/hospital-building-001-global.jpg?cropAlias=hero_large&width=992&height=483&quality=80&rmode=crop&format=webp&null" 
+                 alt="Health Center Image">
+        </div>
+
+        <!-- Clickable Flexboxes (2 per row) -->
+        <div class="info-boxes">
+            <div class="box" onclick="location.href='select-hospital.html'">
+                <h2>Select Your Hospital</h2>
+                <p>Book an appointment with doctors.</p>
+            </div>
+            <div class="box" onclick="location.href='register-hospital.html'">
+                <h2>Register Your Hospital</h2>
+                <p>Add your hospital to our directory.</p>
+            </div>
+            <div class="box" onclick="location.href='vaccination-updates.html'">
+                <h2>Vaccination Updates</h2>
+                <p>Stay informed on the latest vaccination drives.</p>
+            </div>
+            <div class="box" onclick="location.href='health-campaigns.html'">
+                <h2>Health Campaigns</h2>
+                <p>Learn about ongoing health initiatives.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

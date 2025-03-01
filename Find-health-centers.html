@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospitals Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* Make sure the body takes full height */
+            text-align: center;
+            background-image: url('https://img.freepik.com/free-vector/blue-pink-halftone-background_53876-99004.jpg?w=2000'); /* Default background image */
+            background-size: cover;
+            background-position: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center the contents of the search container */
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Slight transparency to make it stand out */
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .city-search-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .city-card {
+            background-color: #00796b;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .city-card:hover {
+            background-color: #004d40;
+        }
+
+        .city-search-bar input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .city-search-bar input[type="text"]:focus {
+            border-color: #00796b;
+        }
+
+        .background-upload {
+            margin-top: 20px;
+        }
+
+        .background-upload input[type="file"] {
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="search-container">
+        <h1>Find Hospitals in Major Cities</h1>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search City..." onkeyup="filterCities()">
+            <div id="cityList" class="city-search-bar"></div>
+        </div>
+
+        <!-- Upload background image option -->
+        <div class="background-upload">
+            <label for="bgImageInput">Choose Background Image:</label>
+            <input type="file" id="bgImageInput" accept="image/*" onchange="changeBackground()">
+        </div>
+    </div>
+
+    <script>
+        const cities = [
+            { id: 1, name: "Delhi" },
+            { id: 2, name: "Mumbai" },
+            { id: 3, name: "Bangalore" },
+            { id: 4, name: "Kolkata" },
+            { id: 5, name: "Chennai" },
+            { id: 6, name: "Hyderabad" },
+            { id: 7, name: "Pune" },
+            { id: 8, name: "Ahmedabad" },
+            { id: 9, name: "Jaipur" },
+            { id: 10, name: "Lucknow" },
+            { id: 11, name: "Surat" },
+            { id: 12, name: "Indore" },
+            { id: 13, name: "Chandigarh" },
+            { id: 14, name: "Coimbatore" },
+            { id: 15, name: "Nagpur" },
+            { id: 16, name: "Vadodara" },
+            { id: 17, name: "Patna" },
+            { id: 18, name: "Bhopal" },
+            { id: 19, name: "Visakhapatnam" },
+            { id: 20, name: "Thane" }
+        ];
+
+        // Function to display city list with a unique color
+        function displayCities() {
+            const cityList = document.getElementById('cityList');
+            cityList.innerHTML = ''; // Clear previous list
+
+            cities.forEach(city => {
+                const cityDiv = document.createElement('div');
+                cityDiv.classList.add('city-card');
+                cityDiv.textContent = city.name;
+                cityDiv.onclick = () => window.location.href = hospitals.html?city=${city.id};
+                cityList.appendChild(cityDiv);
+            });
+        }
+
+        // Function to filter city names based on input
+        function filterCities() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredCities = cities.filter(city => city.name.toLowerCase().includes(searchInput));
+            
+            const cityList = document.getElementById('cityList');
+            cityList.innerHTML = ''; // Clear previous list
+
+            filteredCities.forEach(city => {
+                const cityDiv = document.createElement('div');
+                cityDiv.classList.add('city-card');
+                cityDiv.textContent = city.name;
+                cityDiv.onclick = () => window.location.href = hospitals.html?city=${city.id};
+                cityList.appendChild(cityDiv);
+            });
+        }
+
+        // Function to change background image
+        function changeBackground() {
+            const fileInput = document.getElementById('bgImageInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.body.style.backgroundImage = url(${event.target.result});
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Initialize city list on page load
+        window.onload = displayCities;
+    </script>
+
+</body>
+</html>

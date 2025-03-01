@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Vaccine Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+            background-image: url('https://wallpaperaccess.com/full/1924546.jpg');
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            width: 50%;
+            margin: auto;
+            text-align:center;
+        }
+        input, textarea, select {
+            width: 95%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .success-message {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+.h2{
+text-align:center;
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Submit Vaccine Details</h2>
+        <form id="vaccineForm" enctype="multipart/form-data">
+            <input type="text" id="hospitalName" placeholder="Hospital Name" required>
+            <input type="text" id="hospitalAddress" placeholder="Hospital Address" required>
+            <input type="date" id="vaccinationDate" required>
+            <input type="text" id="vaccineName" placeholder="Vaccine Name" required>
+            <input type="text" id="disease" placeholder="Disease Prevented" required>
+            <input type="text" id="dosage" placeholder="Dosage Information" required>
+            <textarea id="symptoms" placeholder="Possible Symptoms" required></textarea>
+            <textarea id="sideEffects" placeholder="Side Effects of Vaccine (if any)" required></textarea>
+            <input type="text" id="ageGroup" placeholder="Recommended Age Group" required>
+
+            <!-- Image Upload Field -->
+            <label for="image">Upload Vaccine Image:</label>
+            <input type="file" id="image" accept="image/*" required>
+
+               <div class="button-container">
+    <button type="submit">Submit</button>
+    <button type="button" id="viewDetails">View Vaccine Details</button>
+</div>            <p class="success-message" id="successMessage">Vaccine details stored successfully!</p>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("vaccineForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData();
+            formData.append("hospitalName", document.getElementById("hospitalName").value);
+            formData.append("hospitalAddress", document.getElementById("hospitalAddress").value);
+            formData.append("vaccinationDate", document.getElementById("vaccinationDate").value);
+            formData.append("vaccineName", document.getElementById("vaccineName").value);
+            formData.append("disease", document.getElementById("disease").value);
+            formData.append("dosage", document.getElementById("dosage").value);
+            formData.append("symptoms", document.getElementById("symptoms").value);
+            formData.append("sideEffects", document.getElementById("sideEffects").value);  
+            formData.append("ageGroup", document.getElementById("ageGroup").value);
+            formData.append("image", document.getElementById("image").files[0]);
+
+            try {
+                const response = await fetch("http://localhost:5000/api/vaccine-form", {  
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    document.getElementById("successMessage").style.display = "block";
+                    document.getElementById("vaccineForm").reset();
+
+                    // Hide success message after 3 seconds
+                    setTimeout(() => {
+                        document.getElementById("successMessage").style.display = "none";
+                    }, 3000);
+                } else {
+                    const errorMessage = await response.text();
+                    alert("Error submitting form: " + errorMessage);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Failed to submit form.");
+            }
+        });
+
+        // Redirect to vaccine-form-data.html when clicking "View Vaccine Details"
+        document.getElementById("viewDetails").addEventListener("click", function() {
+            window.location.href = "vaccine-form-data.html";
+        });
+    </script>
+</body>
+</html>

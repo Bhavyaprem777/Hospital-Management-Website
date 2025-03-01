@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+    <title>Search for a Disease</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+   position: relative;
+ background-image: url('https://wallpaperaccess.com/full/1924546.jpg'); /* Replace with your background image URL */
+                        background-size: cover;
+            background-position: center-top;
+}
+       .search-container {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+ 
+       background-size: cover; /* Ensures the image covers the entire container */
+    background-position: top center; /* Aligns the image to the top center */
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+}
+     #searchInput {
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+        }
+        #searchButton {
+            padding: 10px;
+            font-size: 16px;
+            background-color: teal;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+       #suggestions {
+    border: 1px solid #ccc;
+    display: none;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    z-index: 1000;
+    width: calc(300px - 22px);
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 5px; /* Rounded corners for suggestions */
+}
+       .search-container h2 {
+    color: black; /* Change heading color to black */
+}
+
+#suggestions div {
+    color: black; /* Change disease names color to black */
+}
+        #suggestions div:hover {
+            background-color: #e0f7fa;
+        }
+        #diseaseInfo {
+            margin-top: 20px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <h2>Search for a Disease</h2>
+        <input type="text" id="searchInput" placeholder="Enter disease name..." />
+        <button id="searchButton">Search</button>
+        <div id="suggestions"></div>
+    </div>
+    <div id="diseaseInfo" style="display: none;"></div>
+
+    <script>
+        const diseases = [
+            {
+                name: 'Common Cold',
+                symptoms: ['Cough', 'Sore throat', 'Runny nose', 'Sneezing', 'Mild fever', 'Fatigue'],
+                precautions: ['Wash hands frequently', 'Avoid close contact with sick individuals', 'Stay hydrated', 'Rest well'],
+                medicines: ['Antihistamines', 'Pain relievers', 'Decongestants']
+            },
+            {
+                name: 'Flu',
+                symptoms: ['High fever', 'Chills', 'Cough', 'Sore throat', 'Body aches', 'Headaches', 'Fatigue'],
+                precautions: ['Get vaccinated annually', 'Practice good hygiene', 'Stay away from crowded places during flu season'],
+                medicines: ['Antivirals', 'Pain relievers', 'Cough suppressants']
+            },
+            {
+                name: 'Allergies',
+                symptoms: ['Sneezing', 'Itchy eyes', 'Runny nose', 'Skin rashes', 'Difficulty breathing', 'Fatigue'],
+                precautions: ['Avoid allergens', 'Use air purifiers', 'Keep windows closed during pollen season'],
+                medicines: ['Antihistamines', 'Nasal sprays', 'Decongestants']
+            },
+            {
+                name: 'Migraine',
+                symptoms: ['Severe headache', 'Nausea', 'Sensitivity to light and sound', 'Visual disturbances', 'Fatigue', 'Dizziness'],
+                precautions: ['Avoid known triggers', 'Stay hydrated', 'Maintain a regular sleep schedule'],
+                medicines: ['Pain relievers', 'Triptans', 'Anti-nausea medications']
+            },
+            {
+                name: 'Stomach Flu (Gastroenteritis)',
+                symptoms: ['Nausea', 'Vomiting', 'Diarrhea', 'Abdominal cramps', 'Fever', 'Headaches'],
+                precautions: ['Stay hydrated with fluids', 'Wash hands regularly', 'Avoid contaminated food and water'],
+                medicines: ['Rehydration solutions', 'Anti-nausea medications', 'Probiotics']
+            },
+            {
+                name: 'Sinusitis',
+                symptoms: ['Facial pain', 'Nasal congestion', 'Headache', 'Post-nasal drip', 'Cough', 'Fever'],
+                precautions: ['Stay hydrated', 'Use saline nasal sprays', 'Avoid smoking and pollutants'],
+                medicines: ['Decongestants', 'Pain relievers', 'Antibiotics (if bacterial)']
+            },
+            {
+                name: 'Chickenpox',
+                symptoms: ['Itchy rash', 'Fever', 'Fatigue', 'Loss of appetite', 'Headache'],
+                precautions: ['Get vaccinated', 'Avoid close contact with infected individuals'],
+                medicines: ['Antihistamines', 'Pain relievers', 'Calamine lotion']
+            },
+            {
+                name: 'Conjunctivitis (Pink Eye)',
+                symptoms: ['Redness in the eye', 'Itching', 'Discharge', 'Tearing', 'Swelling'],
+                precautions: ['Avoid touching eyes', 'Wash hands regularly', 'Use separate towels'],
+                medicines: ['Antihistamine eye drops', 'Antibiotic eye drops (if bacterial)']
+            },
+            {
+                name: 'Mild Burns',
+                symptoms: ['Redness', 'Pain', 'Swelling', 'Blisters'],
+                precautions: ['Cool the burn with running water', 'Avoid ice or very cold water'],
+                medicines: ['Pain relievers', 'Antibiotic ointment']
+            },
+            {
+                name: 'Constipation',
+                symptoms: ['Infrequent bowel movements', 'Hard stools', 'Abdominal discomfort', 'Bloating'],
+                precautions: ['Increase fiber intake', 'Stay hydrated', 'Exercise regularly'],
+                medicines: ['Laxatives', 'Stool softeners', 'Fiber supplements']
+            },
+            {
+                name: 'Nausea',
+                symptoms: ['Stomach discomfort', 'Vomiting', 'Sweating', 'Dizziness'],
+                precautions: ['Eat small meals', 'Stay hydrated', 'Avoid strong odors'],
+                medicines: ['Anti-nausea medications', 'Ginger supplements']
+            },
+            {
+                name: 'Dizziness',
+                symptoms: ['Lightheadedness', 'Feeling faint', 'Loss of balance', 'Nausea'],
+                precautions: ['Get up slowly', 'Stay hydrated', 'Avoid sudden movements'],
+                medicines: ['Antihistamines', 'Vestibular suppressants']
+            },
+            {
+                name: 'Sore Throat',
+                symptoms: ['Pain or scratchiness in the throat', 'Difficulty swallowing', 'Dry throat'],
+                precautions: ['Stay hydrated', 'Avoid irritants', 'Use throat lozenges'],
+                medicines: ['Pain relievers', 'Throat sprays', 'Humidifiers']
+            },
+            {
+                name: 'Back Pain',
+                symptoms: ['Dull or sharp pain in the back', 'Stiffness', 'Radiating pain to legs'],
+                precautions: ['Maintain good posture', 'Exercise regularly', 'Avoid heavy lifting'],
+                medicines: ['Pain relievers', 'Muscle relaxants', 'Physical therapy']
+            },
+            {
+                name: 'Diabetes',
+                symptoms: ['Increased thirst', 'Frequent urination', 'Extreme fatigue', 'Blurred vision'],
+                precautions: ['Monitor blood sugar levels', 'Eat a balanced diet', 'Exercise regularly'],
+                medicines: ['Insulin', 'Oral hypoglycemics']
+            },
+            {
+                name: 'Hypertension',
+                symptoms: ['Often no symptoms', 'Headaches', 'Shortness of breath', 'Nosebleeds'],
+                precautions: ['Reduce salt intake', 'Exercise regularly', 'Manage stress'],
+                medicines: ['ACE inhibitors', 'Beta-blockers', 'Diuretics']
+            },
+            {
+                name: 'Asthma',
+                symptoms: ['Wheezing', 'Shortness of breath', 'Chest tightness', 'Coughing'],
+                precautions: ['Avoid allergens', 'Use inhalers as prescribed', 'Monitor air quality'],
+                medicines: ['Inhaled corticosteroids', 'Bronchodilators']
+            },
+            {
+                name: 'Gastroesophageal Reflux Disease (GERD)',
+                symptoms: ['Heartburn', 'Chest pain', 'Difficulty swallowing', 'Regurgitation'],
+                precautions: ['Avoid trigger foods', 'Eat smaller meals', 'Elevate head during sleep'],
+                medicines: ['Antacids', 'Proton pump inhibitors', 'H2 blockers']
+            },
+            {
+                name: 'Eczema',
+                symptoms: ['Dry, itchy skin', 'Red or brown patches', 'Thickened skin', 'Oozing sores'],
+                precautions: ['Moisturize regularly', 'Avoid harsh soaps', 'Wear loose clothing'],
+                medicines: ['Topical corticosteroids', 'Antihistamines']
+            },
+            {
+                name: 'Acid Reflux',
+                symptoms: ['Heartburn', 'Regurgitation', 'Difficulty swallowing', 'Chest pain'],
+                precautions: ['Avoid spicy foods', 'Eat smaller meals', 'Don’t lie down after eating'],
+                medicines: ['Antacids', 'Proton pump inhibitors']
+            },
+            {
+                name: 'Scabies',
+                symptoms: ['Intense itching', 'Rash', 'Burrows in the skin', 'Sores from scratching'],
+                precautions: ['Avoid close contact with infected individuals', 'Wash bedding and clothing in hot water'],
+                medicines: ['Scabicide creams', 'Antihistamines']
+            },
+            {
+                name: 'Ringworm',
+                symptoms: ['Itchy, red, circular rash', 'Bald patches in hair', 'Flaky skin'],
+                precautions: ['Keep skin dry', 'Avoid sharing personal items', 'Wear breathable clothing'],
+                medicines: ['Antifungal creams', 'Oral antifungal medications']
+            },
+            {
+                name: 'Athlete\'s Foot',
+                symptoms: ['Itching', 'Burning sensation', 'Peeling skin between toes', 'Redness'],
+                precautions: ['Keep feet dry', 'Wear breathable footwear', 'Avoid walking barefoot in public places'],
+                medicines: ['Antifungal creams', 'Powders']
+            },
+            {
+                name: 'Psoriasis',
+                symptoms: ['Red patches covered with thick, silvery scales', 'Dry, cracked skin', 'Itching', 'Thickened nails'],
+                precautions: ['Avoid triggers like stress', 'Moisturize regularly', 'Follow a healthy diet'],
+                medicines: ['Topical treatments', 'Phototherapy', 'Systemic medications']
+            },
+            {
+                name: 'Gallstones',
+                symptoms: ['Sudden pain in the upper right abdomen', 'Nausea', 'Indigestion', 'Jaundice'],
+                precautions: ['Maintain a healthy weight', 'Eat a high-fiber diet', 'Avoid rapid weight loss'],
+                medicines: ['Pain relievers', 'Surgery (if necessary)']
+            },
+            {
+                name: 'Peptic Ulcer',
+                symptoms: ['Burning stomach pain', 'Bloating', 'Nausea', 'Indigestion'],
+                precautions: ['Avoid NSAIDs', 'Reduce stress', 'Eat smaller, more frequent meals'],
+                medicines: ['Proton pump inhibitors', 'Antibiotics (if H. pylori is present)']
+            },
+            {
+                name: 'Urinary Tract Infection (UTI)',
+                symptoms: ['Frequent urination', 'Burning sensation while urinating', 'Cloudy urine', 'Pelvic pain'],
+                precautions: ['Stay hydrated', 'Wipe front to back', 'Avoid irritating products'],
+                medicines: ['Antibiotics', 'Pain relievers']
+            },
+            {
+                name: 'Heat Exhaustion',
+                symptoms: ['Heavy sweating', 'Weakness', 'Dizziness', 'Nausea'],
+                precautions: ['Stay hydrated', 'Avoid prolonged sun exposure', 'Take breaks in a cool area'],
+                medicines: ['Electrolyte drinks', 'Rest']
+            },
+            {
+                name: 'Pneumonia',
+                symptoms: ['Cough', 'Fever', 'Shortness of breath', 'Chest pain'],
+                precautions: ['Get vaccinated', 'Practice good hygiene', 'Avoid smoking'],
+                medicines: ['Antibiotics', 'Cough medicine']
+            },
+            {
+                name: 'Shingles',
+                symptoms: ['Pain, burning, or tingling sensation', 'Rash', 'Blisters', 'Fever'],
+                precautions: ['Get vaccinated', 'Avoid contact with those who have not had chickenpox'],
+                medicines: ['Antiviral medications', 'Pain relievers']
+            },
+            {
+                name: 'Tension Headaches',
+                symptoms: ['Mild to moderate pain', 'Tightness in the forehead', 'Sensitivity to light', 'Fatigue'],
+                precautions: ['Practice stress management', 'Maintain good posture', 'Stay hydrated'],
+                medicines: ['Pain relievers', 'Relaxation techniques']
+            }
+        ];
+
+        const searchInput = document.getElementById('searchInput');
+        const suggestions = document.getElementById('suggestions');
+
+        // Show all diseases when the input is focused
+        searchInput.addEventListener('focus', function() {
+            suggestions.innerHTML = '';
+            diseases.forEach(disease => {
+                const div = document.createElement('div');
+                div.textContent = disease.name;
+                div.onclick = () => {
+                    searchInput.value = disease.name;
+                    suggestions.innerHTML = '';
+                    suggestions.style.display = 'none';
+                };
+                suggestions.appendChild(div);
+            });
+            suggestions.style.display = 'block';
+        });
+
+        searchInput.addEventListener('input', function() {
+            const input = this.value.toLowerCase();
+            suggestions.innerHTML = '';
+            if (input) {
+                const filteredDiseases = diseases.filter(disease => disease.name.toLowerCase().includes(input));
+                filteredDiseases.forEach(disease => {
+                    const div = document.createElement('div');
+                    div.textContent = disease.name;
+                    div.onclick = () => {
+                        searchInput.value = disease.name;
+                        suggestions.innerHTML = '';
+                        suggestions.style.display = 'none';
+                    };
+                    suggestions.appendChild(div);
+                });
+                suggestions.style.display = filteredDiseases.length > 0 ? 'block' : 'none';
+            } else {
+                suggestions.style.display = 'none';
+            }
+        });
+
+        document.getElementById('searchButton').addEventListener('click', async function() {
+            const diseaseName = searchInput.value.trim();
+            if (diseaseName) {
+                const disease = diseases.find(d => d.name.toLowerCase() === diseaseName.toLowerCase());
+                if (disease) {
+                    displayDiseaseInfo(disease);
+                } else {
+                    alert('Disease not found');
+                }
+            }
+        });
+
+    function displayDiseaseInfo(disease) {
+    const diseaseInfo = document.getElementById('diseaseInfo');
+    diseaseInfo.innerHTML = `
+        <h2 style="text-align: center; color: #2c3e50;">${disease.name}</h2>
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; background-color: #f9f9f9; padding: 20px; border-radius: 8px; border: 2px solid #d1e7dd; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);">
+            <h3 style="color: teal;">Symptoms:</h3>
+            <ul style="font-size: 18px; list-style-type: square; padding-left: 20px; color: #333;">
+                ${disease.symptoms.map(symptom => `<li style="background-color: #e0f7fa; padding: 8px; margin: 5px 0; border-radius: 5px;">${symptom}</li>`).join('')}
+            </ul>
+            <h3 style="color: darkorange;">Precautions:</h3>
+            <ul style="font-size: 18px; list-style-type: square; padding-left: 20px; color: #333;">
+                ${disease.precautions.map(precaution => `<li style="background-color: #fff3e0; padding: 8px; margin: 5px 0; border-radius: 5px;">${precaution}</li>`).join('')}
+            </ul>
+            <h3 style="color: darkviolet;">Medicines:</h3>
+            <ul style="font-size: 18px; list-style-type: square; padding-left: 20px; color: #333;">
+                ${disease.medicines.map(medicine => `<li style="background-color: #f3e5f5; padding: 8px; margin: 5px 0; border-radius: 5px;">${medicine}</li>`).join('')}
+            </ul>
+        </div>
+    `;
+    diseaseInfo.style.display = 'block';
+    diseaseInfo.style.margin = '20px auto';
+    diseaseInfo.style.maxWidth = '600px';
+}
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!searchInput.contains(event.target) && !suggestions.contains(event.target)) {
+                suggestions.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

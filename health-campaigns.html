@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Campaigns</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            text-align: center;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slogan {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 40px;
+        }
+
+        /* Importance Section */
+        .importance-box {
+            background-color: #e3f2fd;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .importance-text {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .importance-image img {
+            width: 350px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* Campaigns Section */
+        .campaign-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-bottom: 10px;
+        }
+
+        .campaign-box {
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Different colors for each campaign box */
+        .campaign-box:nth-child(1) { background-color: #ffebee; }
+        .campaign-box:nth-child(2) { background-color: #e3f2fd; }
+        .campaign-box:nth-child(3) { background-color: #e8f5e9; }
+        .campaign-box:nth-child(4) { background-color: #fff3e0; }
+        .campaign-box:nth-child(5) { background-color: #ede7f6; }
+
+        .campaign-box:hover {
+            transform: scale(1.05);
+        }
+
+        .view-details {
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #00796b;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .view-details:hover {
+            background-color: #004d40;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 75%;
+            max-height: 80%;
+            overflow-y: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+.submit-button {
+    margin-top: 20px;
+    padding: 15px 25px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+
+        .modal img {
+            width: 350px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-left: 20px;
+        }
+
+        .close {
+            float: right;
+            font-size: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            color: red;
+        }
+
+        .close:hover {
+            color: darkred;
+        }
+
+        @media (max-width: 768px) {
+            .importance-box {
+                flex-direction: column;
+                text-align: center;
+            }
+            .modal-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .modal img {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Health Campaigns</h1>
+        <p class="slogan">Spreading awareness, saving lives. Join us in upcoming health campaigns.</p>
+
+        <!-- Importance of Health Campaigns -->
+        <div class="importance-box">
+            <div class="importance-text">
+                <h2>Why Health Campaigns Matter?</h2>
+                <p>Health campaigns educate communities, prevent diseases, and promote wellness. They provide 
+                   information on vaccinations, mental health, and nutrition, ensuring people stay informed and 
+                   proactive about their health.
+Health Awareness: Health campaigns educate people about diseases, prevention methods, and healthy lifestyles, reducing the risk of illness.
+
+Early Disease Detection: These campaigns promote screenings and check-ups, helping detect diseases like cancer and diabetes at an early stage.
+
+Community Well-being: By spreading vital health information, campaigns improve overall community health and well-being, reducing healthcare burdens.</p>
+            </div>
+            <div class="importance-image">
+                <img src="https://mpa.bright-futures.co.uk/wp-content/uploads/2022/05/mh_awareness_week.jpg" alt="Health Campaign">
+            </div>
+        </div>
+
+        <!-- Campaigns Section -->
+        <div class="campaign-container">
+            <div class="campaign-box" onclick="openModal('Vaccine Awareness', 'Educating people about vaccinations to prevent deadly diseases.', '1. Reduces risk of infections<br>2. Builds herd immunity', 'https://cdn.who.int/media/images/default-source/world-immunization-week/wiw-2020/socialmediatile2.png?sfvrsn=905eb183_8')">
+                <h2>Vaccine Awareness</h2>
+                <p><strong>Date:</strong> March 5, 2025</p>
+                <p><strong>Location:</strong> Sunrise Health Center, Bangalore</p>
+                 <p><strong>Address:</strong>1st main,2nd cross,Singasandra,Bangalore</p>
+                <button class="view-details">View Details</button>
+            </div>
+            <div class="campaign-box" onclick="openModal('Nutrition Awareness', 'Promoting healthy eating habits and balanced diets.', '1. Encourages healthy food choices<br>2. Prevents nutrient deficiencies', 'https://i.pinimg.com/originals/e9/1a/e6/e91ae6ad6674eb1edfeac63233d78cf8.png')">
+                <h2>Nutrition Awareness</h2>
+                <p><strong>Date:</strong> March 12, 2025</p>
+                <p><strong>Location:</strong> Sunshine Pediatrics, Pune</p>
+                 <p><strong>Address:1st Enclave,Sasson Road,Pune</strong></p>
+
+                <button class="view-details">View Details</button>
+            </div>
+            <div class="campaign-box" onclick="openModal('Hygiene Education', 'Spreading awareness on hygiene to prevent infections.', '1. Reduces disease spread<br>2. Promotes cleanliness', 'https://thumbs.dreamstime.com/b/personal-hygiene-disease-prevention-healthcare-educational-infographic-how-to-wash-your-hands-properly-step-hand-washing-179259807.jpg')">
+                <h2>Hygiene Education</h2>
+                <p><strong>Date:</strong> April 5, 2025</p>
+                <p><strong>Location:</strong> Community Health Center, Delhi</p>
+                 <p><strong>Address:</strong>Ansari Nagar,Delhi</p>
+
+                <button class="view-details">View Details</button>
+            </div>
+            <div class="campaign-box" onclick="openModal('Mental Health Awareness', 'Breaking the stigma around mental health and promoting well-being.', '1. Encourages emotional well-being<br>2. Provides support networks', 'https://marketplace.canva.com/EADao-tycOE/1/0/1131w/canva-teal-and-white-mental-health-poster-giySXR-0pOs.jpg')">
+                <h2>Mental Health Awareness</h2>
+                <p><strong>Date:</strong> April 15, 2025</p>
+                 <p><strong>Location:</strong> City Hospital, Tirupati</p>
+                  <p><strong>Address:</strong>Air By-pass Road,2nd Street,Tirupati</p>
+
+                <button class="view-details">View Details</button>
+            </div>
+            <div class="campaign-box" onclick="openModal('Physical Activity Promotion', 'Encouraging people to stay active for a healthy lifestyle.', '1. Reduces risk of chronic diseases<br>2. Improves overall fitness', 'https://www.easel.ly/blog/wp-content/uploads/2014/04/Fitness-Infographic-Template.png')">
+                <h2>Physical Activity Promotion</h2>
+                <p><strong>Date:</strong> April 25, 2025</p>
+                <p><strong>Location:</strong> Green Valley Clinic, Hyderabad</p>
+                    <p><strong>Address:</strong>Jublee Hills,3rd road,Shanti Nagar,Hyderabad</p>
+
+                <button class="view-details">View Details</button>
+            </div>
+        </div>
+<button class="submit-button" onclick="redirectToForm()">Submit Health Campaign Details</button>
+
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div>
+                <h2 id="modal-title"></h2>
+                <p id="modal-description"></p>
+                <p><strong>Benefits:</strong></p>
+                <p id="modal-benefits"></p>
+            </div>
+            <img id="modal-image" src="" alt="Campaign Image">
+        </div>
+    </div>
+
+    <script>
+        function openModal(title, description, benefits, imgSrc) {
+            document.getElementById("modal-title").innerText = title;
+            document.getElementById("modal-description").innerText = description;
+            document.getElementById("modal-benefits").innerHTML = benefits;
+            document.getElementById("modal-image").src = imgSrc;
+            document.getElementById("modal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+function redirectToForm() {
+        window.location.href = "health-campaign-form.html"; // Change URL if needed
+    }
+    </script>
+
+</body>
+</html>

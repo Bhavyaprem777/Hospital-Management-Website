@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register a Hospital</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            background-image: url('https://wallpaperaccess.com/full/1924546.jpg');
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        input, button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #00796b;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005a4f;
+        }
+        .doctor-group {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .doctor-group button {
+            background: #d32f2f;
+            border-radius: 5px;
+            color: white;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        .doctor-group button:hover {
+            background: #b71c1c;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Register a New Hospital</h2>
+        <form id="hospitalForm" enctype="multipart/form-data">
+            <input type="text" id="hospitalName" name="name" placeholder="Hospital Name" required><br>
+            <input type="text" id="hospitalLocation" name="location" placeholder="Location" required><br>
+            <input type="text" id="hospitalPhone" name="phone" placeholder="Phone Number" required><br>
+            <input type="email" id="hospitalEmail" name="email" placeholder="Email" required><br>
+            <input type="text" id="hospitalRegNo" name="regNo" placeholder="Registration Number" required><br>
+            <input type="text" id="hospitalGovtID" name="govtID" placeholder="Government Hospital ID (Optional)"><br>
+            <input type="text" id="hospitalWebsite" name="website" placeholder="Website (Optional)"><br>
+            <input type="text" id="hospitalOwner" name="owner" placeholder="Owner Name" required><br>
+            <label>Upload License Proof (PDF/JPG/PNG):</label>
+            <input type="file" id="hospitalLicense" name="license" accept=".pdf,.jpg,.png" required><br>
+            <label>Upload Hospital Image (JPG/PNG):</label>
+            <input type="file" id="hospitalImage" name="image" accept=".jpg,.png" required><br>
+            <input type="time" id="openingTime" name="opening" required>
+            <input type="time" id="closingTime" name="closing" required><br>
+
+            <h2>Doctor Information</h2>
+            <div id="doctorSection">
+                <div class="doctor-group">
+                    <label>Doctor Name:</label>
+                    <input type="text" class="doctorName" required>
+                    <label>Specialization:</label>
+                    <input type="text" class="doctorSpecialization" required>
+                    <label>Experience (in years):</label>
+                    <input type="number" class="doctorExperience" required>
+                    <label>Consultation Fee:</label>
+                    <input type="number" class="doctorFee" required>
+                </div>
+            </div>
+
+            <button type="button" id="addDoctorBtn">Add Another Doctor</button>
+            <button type="submit" id="submitBtn">Register Hospital</button>
+        </form>
+
+        <p id="errorMessage" style="color: red; display: none;"></p>
+        <p id="successMessage" style="color: green; display: none;"></p>
+
+        <h2>Registered Hospitals</h2>
+        <table id="hospital-table">
+            <tr>
+                <th>Image</th>
+                <th>Hospital Name</th>
+                <th>Location</th>
+                <th>Doctors</th>
+            </tr>
+        </table>
+    </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    loadHospitals(); // Load hospitals initially
+
+    document.getElementById("addDoctorBtn").addEventListener("click", function () {
+        addDoctorFields();
+    });
+
+    // Add fields for new doctors
+    function addDoctorFields() {
+        const doctorSection = document.getElementById("doctorSection");
+        const doctorDiv = document.createElement("div");
+        doctorDiv.classList.add("doctor-group");
+
+        doctorDiv.innerHTML = `
+            <label>Doctor Name:</label>
+            <input type="text" class="doctorName" required>
+            <label>Specialization:</label>
+            <input type="text" class="doctorSpecialization" required>
+            <label>Experience (in years):</label>
+            <input type="number" class="doctorExperience" required>
+            <label>Consultation Fee:</label>
+            <input type="number" class="doctorFee" required>
+            <button type="button" class="removeDoctorBtn">Remove</button>
+        `;
+
+        doctorSection.appendChild(doctorDiv);
+
+        doctorDiv.querySelector(".removeDoctorBtn").addEventListener("click", function () {
+            doctorDiv.remove();
+        });
+    }
+
+    // Submit the hospital registration form
+    document.getElementById("hospitalForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const doctors = [];
+
+        document.querySelectorAll(".doctor-group").forEach(doctorDiv => {
+            doctors.push({
+                name: doctorDiv.querySelector(".doctorName").value,
+                specialization: doctorDiv.querySelector(".doctorSpecialization").value,
+                experience: doctorDiv.querySelector(".doctorExperience").value,
+                consultationFee: doctorDiv.querySelector(".doctorFee").value
+            });
+        });
+
+        formData.append("doctors", JSON.stringify(doctors));
+
+        // Send data to the backend to register the hospital
+        const response = await fetch("http://localhost:5500/register-hospital", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message); // Show success message
+            loadHospitals();  // Reload hospitals after registration
+        } else {
+            alert("Error registering hospital");
+        }
+    });
+
+    // Load hospitals from the server and display them
+    async function loadHospitals() {
+        const response = await fetch("http://localhost:5500/hospitals");
+        const hospitals = await response.json();
+
+        const hospitalTable = document.getElementById("hospital-table");
+        hospitalTable.innerHTML = `
+            <tr>
+                <th>Image</th>
+                <th>Hospital Name</th>
+                <th>Location</th>
+                <th>Doctors</th>
+            </tr>
+        `;
+
+        hospitals.forEach(hospital => {
+            const doctorList = hospital.doctors.map(doctor => `${doctor.name} (${doctor.specialization})`).join(', ');
+const row = `
+    <tr>
+        <td><img src="http://localhost:5500${hospital.image}" alt="${hospital.name}"></td>
+        <td><a href="hospital-details.html?id=${hospital._id}">${hospital.name}</a></td>
+        <td>${hospital.location}</td>
+        <td>${doctorList}</td>
+    </tr>
+`;
+hospitalTable.innerHTML += row;
+
+                   });
+    }
+});
+</script>
+
+</body>
+</html>

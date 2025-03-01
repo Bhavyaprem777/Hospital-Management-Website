@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+    <title>Health Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            overflow-x: hidden; /* Prevent horizontal overflow */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Full viewport height */
+        }
+
+        .health-information {
+            background-color: #e0f7fa;
+            padding: 20px;
+            height: 40vh; /* 40% of the viewport height */
+            text-align: center;
+        }
+
+        .importance {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .importance h2 {
+            font-family: 'Roboto Slab', serif;
+            font-size: 2.5em;
+            color: #00796b;
+        }
+
+        .slogan {
+            margin-top: 10px;
+            font-size: 1.5em;
+            color: teal;
+        }
+
+        .slideshow-container {
+            position: relative;
+            height: 60vh; /* 60% of the viewport height */
+            overflow: hidden; /* Prevent overflow of images */
+            background-color:#E6E6FA;
+        }
+
+        .slideshow-wrapper {
+            display: flex; /* Use flexbox for horizontal scrolling */
+            height: 100%; /* Match the height of the container */
+            transition: transform 0.3s ease; /* Smooth transition */
+        }
+
+        .slide {
+            min-width: 100vw; /* Each slide takes the full viewport width */
+            position: relative; /* Position for absolute children */
+        }
+
+        .slideshow-image {
+            width: 100%; /* Full width of the slide */
+            height: auto; /* Maintain aspect ratio */
+            max-height: 70vh; /* Ensure the image fits within the viewport */
+            object-fit: contain; /* Maintain aspect ratio */
+            margin-top: 10px; /* Adjust for top spacing */
+        }
+
+        .slideshow-heading {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: yellow; /* Unique color for heading */
+            font-size: 2em;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .quote {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: lightblue; /* Unique color for quote */
+            font-size: 1.5em;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .next-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+
+   .diseases-container {
+    text-align: center;
+    margin: 0; /* No margin for full-page section */
+    padding: 20px;
+    background-image: url('https://wallpaperaccess.com/full/1924546.jpg');
+    background-size: cover; /* Cover the entire area */
+    background-position: center; /* Center the image */
+    position: fixed; /* Fix position to cover the viewport */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100vw; /* Full width of the viewport */
+    max-height: 95vh; /* Full height of the viewport */
+    color: pink; /* Text color for visibility */
+    display: none; /* Initially hidden */
+    z-index: 1; /* Ensure it's above the main background but below other elements */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+
+
+
+
+
+
+        .diseases-container h2 {
+            font-family: 'Roboto Slab', serif;
+            font-size: 2em;
+            margin-bottom: 20px;
+            color:pink;
+        }
+
+        .disease-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .disease-image-wrapper {
+            position: relative;
+            width: 3in;
+            height: 4in;
+        }
+
+        .disease-image {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .disease-image:hover {
+            transform: scale(1.1);
+        }
+
+        .disease-heading {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Health Information Section -->
+    <div class="health-information">
+        <div class="importance">
+            <h2>Importance of Health</h2>
+            <p>Maintaining good health is essential for a fulfilling life. It affects your quality of life, productivity, and overall well-being.</p>
+            <p>Regular check-ups and a balanced lifestyle can help prevent diseases and promote longevity.</p>
+        </div>
+        <div class="slogan">
+            <h3>Your Health Matters!</h3>
+        </div>
+    </div>
+
+    <!-- Slideshow Container -->
+    <div class="slideshow-container" id="slideshowContainer">
+        <div class="slideshow-wrapper" id="slideshowWrapper">
+            <div class="slide">
+                <img src="https://www.rismedia.com/wp-content/uploads/2020/06/healthy-fresh-rainbow-colored-fruits-and-vegetables-in-a-row-picture-id1208790364.jpg" alt="Healthy Diet" class="slideshow-image">
+                <div class="slideshow-heading">Healthy Diet</div>
+                <div class="quote">“Eat a balanced diet rich in fruits and vegetables.”</div>
+            </div>
+            <div class="slide">
+                <img src="https://webstockreview.net/images/clipart-exercise-exercise-man-18.png" alt="Regular Exercise" class="slideshow-image">
+                <div class="slideshow-heading">Regular Exercise</div>
+                <div class="quote">“Exercise regularly for at least 30 minutes a day.”</div>
+            </div>
+            <div class="slide">
+                <img src="https://api.hub.jhu.edu/factory/sites/default/files/styles/landscape/public/staying-hydrated.jpg" alt="Stay Hydrated" class="slideshow-image">
+                <div class="slideshow-heading">Stay Hydrated</div>
+                <div class="quote">“Stay hydrated; drink plenty of water throughout the day.”</div>
+            </div>
+            <div class="slide">
+                <img src="https://miro.medium.com/v2/resize:fit:1024/1*o3yBgXpgowNGsgPTZjS4sA.jpeg" alt="Get Enough Sleep" class="slideshow-image">
+                <div class="slideshow-heading">Get Enough Sleep</div>
+                <div class="quote">“Aim for 7-8 hours of quality sleep each night.”</div>
+            </div>
+            <div class="slide">
+                <img src="https://individualogist.com/wp-content/uploads/meditation-background-10.jpg" alt="Mental Wellness" class="slideshow-image">
+                <div class="slideshow-heading">Mental Wellness</div>
+                <div class="quote">“Prioritize your mental health through mindfulness and relaxation.”</div>
+            </div>
+        </div>
+        <button class="next-button" id="nextButton">Next</button>
+    </div>
+
+    <!-- Diseases Section -->
+    <div class="diseases-container" id="diseasesContainer">
+        <h2>Click on a Disease to Learn More</h2>
+        <div class="disease-images">
+            <div class="disease-image-wrapper">
+                <a href="flu.html">
+                    <img src="https://www.mainstreetfamilycare.com/wp-content/uploads/2020/01/iStock-Flu-Adult-Signs-and-Symptoms.jpg" alt="Flu" class="disease-image">
+                    <div class="disease-heading">Flu</div>
+                </a>
+            </div>
+            <div class="disease-image-wrapper">
+                <a href="cold.html">
+                    <img src="https://image.freepik.com/free-vector/common-cold-symptoms-cartoon-style-infographic_1308-49643.jpg" alt="Cold" class="disease-image">
+                    <div class="disease-heading">Cold</div>
+                </a>
+            </div>
+            <div class="disease-image-wrapper">
+                <a href="headache.html">
+                    <img src="https://static.vecteezy.com/system/resources/previews/006/781/045/original/types-of-headaches-infographic-vector.jpg" alt="Headache" class="disease-image">
+                    <div class="disease-heading">Headache</div>
+                </a>
+            </div>
+            <div class="disease-image-wrapper">
+                <a href="stomachache.html">
+                    <img src="https://freepngimg.com/thumb/pain/41261-4-stomach-ache-png-download-free.png" alt="Stomachache" class="disease-image">
+                    <div class="disease-heading">Stomachache</div>
+                </a>
+            </div>
+            <div class="disease-image-wrapper">
+                <a href="fatigue.html">
+                    <img src="https://medvidi.com/wp-content/uploads/2023/03/Clinical-Signs-and-Symptoms-of-Chronic-Fatigue-Syndrome-supporting-image.jpg" alt="Fatigue" class="disease-image">
+                    <div class="disease-heading">Fatigue</div>
+                </a>
+            </div>
+            <div class="disease-image-wrapper">
+                <a href="nausea.html">
+                    <img src="https://img.freepik.com/premium-vector/nausea-vomiting-woman-with-symptoms-nausea_42265-175.jpg?w=2000" alt="Nausea" class="disease-image">
+                    <div class="disease-heading">Nausea</div>
+                </a>
+            </div>
+            <div class="disease-image-wrapper">
+                <a href="dizziness.html">
+                    <img src="https://drjockers.com/wp-content/uploads/2021/09/Dizziness-Causes.jpg" alt="Dizziness" class="disease-image">
+                    <div class="disease-heading">Dizziness</div>
+                </a>
+            </div>
+            <div class="disease-image-wrapper">
+                <a href="sorethroat.html">
+                    <img src="https://cdn.vectorstock.com/i/1000v/27/73/little-boy-suffering-from-sore-throat-cartoon-vector-46422773.jpg" alt="Sore Throat" class="disease-image">
+                    <div class="disease-heading">Sore Throat</div>
+                </a>
+            </div>
+            <div class="disease-image-wrapper">
+                <a href="backpain.html">
+                    <img src="https://clipart-library.com/2023/sad-young-woman-with-symptoms-pain-lower-back-spine-concept-health-medicine_484720-4523.jpg" alt="Back Pain" class="disease-image">
+                    <div class="disease-heading">Back Pain</div>
+                </a>
+            </div>
+
+        </div>
+        <!-- Add this button to your existing HTML -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="Search.html" id="searchDiseaseButton" style="padding: 10px 20px; background-color: teal; color: white; text-decoration: none; border-radius: 5px;">Search for a Disease</a>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slideshow-wrapper > .slide');
+    const totalSlides = slides.length;
+
+    document.getElementById('nextButton').addEventListener('click', function() {
+        document.querySelector('.health-information').style.display = 'none'; // Hide health info
+        document.getElementById('slideshowContainer').style.display = 'none'; // Hide slideshow
+        document.getElementById('diseasesContainer').style.display = 'block'; // Show the diseases section
+    });
+
+    function showSlide(index) {
+        const slideshowWrapper = document.getElementById('slideshowWrapper');
+        slideshowWrapper.style.transform = `translateX(-${index * 100}vw)`; // Scroll to the current slide
+
+        currentSlide = (index + 1) % totalSlides; // Cycle through slides
+        setTimeout(() => showSlide(currentSlide), 2000); // Change slide every 5 seconds
+    }
+
+    showSlide(currentSlide); // Start the slideshow
+</script>
+</body>
+</html>

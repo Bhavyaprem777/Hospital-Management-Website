@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Tips</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            background-image: url('https://media.istockphoto.com/photos/light-color-background-picture-id1071670250?k=20&m=1071670250&s=170667a&w=0&h=oKXFPAHPzb0KEDU6UTg2DHbIY-cL24k26OXjy0ZaH5Y=');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #FF6347; /* Tomato color for the main heading */
+        }
+        h2 {
+            color: #4682B4; /* SteelBlue for subheadings */
+        }
+        p {
+            line-height: 1.6;
+            color: #555;
+            text-align: justify;
+        }
+        .tips {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .tip {
+            background-color: #d1e7dd;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .tip:hover {
+            transform: translateY(-3px);
+        }
+        .tip img {
+            border-radius: 5%;
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+        }
+        .content {
+            display: none;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .content img {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+        }
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+        a:visited {
+            color: purple;
+        }
+    </style>
+    <script>
+        function toggleContent(index) {
+            const content = document.getElementsByClassName('content')[index];
+            content.style.display = content.style.display === 'flex' ? 'none' : 'flex';
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Nutrition Tips</h1>
+    <p>
+        Proper nutrition is essential for maintaining a healthy lifestyle. Eating a balanced diet can help you feel your best and reduce the risk of chronic diseases. This page provides tips and resources to help you make healthier food choices.
+    </p>
+
+    <h2>Healthy Eating Tips</h2>
+    <div class="tips">
+        <div class="tip" onclick="toggleContent(0)">
+            <div>
+                <strong>Eat a Variety of Foods:</strong>
+            </div>
+            <img src="https://westernnews.media.clients.ellingtoncms.com/img/photos/2018/08/09/Balanced-Diet.jpg" alt="Variety of Foods">
+        </div>
+        <div class="content">
+            <img src="https://westernnews.media.clients.ellingtoncms.com/img/photos/2018/08/09/Balanced-Diet.jpg" alt="Variety of Foods">
+            <div>
+                Include a wide range of foods from all food groups—fruits, vegetables, whole grains, and lean proteins. This ensures you receive all essential nutrients your body needs to function optimally and maintain energy levels throughout the day.
+            </div>
+        </div>
+        <div class="tip" onclick="toggleContent(1)">
+            <div>
+                <strong>Control Portion Sizes:</strong>
+            </div>
+            <img src="https://www.fitfeelsgood.com/wp-content/uploads/2017/04/stop-overeating.jpg" alt="Portion Control">
+        </div>
+        <div class="content">
+            <img src="https://www.fitfeelsgood.com/wp-content/uploads/2017/04/stop-overeating.jpg" alt="Portion Control">
+            <div>
+                Be mindful of portion sizes to avoid overeating. Using smaller plates can help control portions, and it's important to listen to your body's hunger cues. This way, you can enjoy your meals without excessive calorie intake.
+            </div>
+        </div>
+        <div class="tip" onclick="toggleContent(2)">
+            <div>
+                <strong>Stay Hydrated:</strong>
+            </div>
+            <img src="https://sfginc.com/wp-content/uploads/2020/08/AdobeStock_294995860-scaled.jpeg" alt="Stay Hydrated">
+        </div>
+        <div class="content">
+            <img src="https://sfginc.com/wp-content/uploads/2020/08/AdobeStock_294995860-scaled.jpeg" alt="Stay Hydrated">
+            <div>
+                Drinking plenty of water throughout the day is vital for your health. Staying hydrated helps maintain bodily functions, aids digestion, and can even curb unnecessary snacking. Aim for at least eight glasses of water daily.
+            </div>
+        </div>
+        <div class="tip" onclick="toggleContent(3)">
+            <div>
+                <strong>Limit Added Sugars:</strong>
+            </div>
+            <img src="https://eatsmartmovemoreva.org/wp-content/uploads/2019/10/Avoiding-Added-Sugar-featured-image.png" alt="Limit Sugars">
+        </div>
+        <div class="content">
+            <img src="https://eatsmartmovemoreva.org/wp-content/uploads/2019/10/Avoiding-Added-Sugar-featured-image.png" alt="Limit Sugars">
+            <div>
+                Reducing your intake of sugary drinks, snacks, and desserts can significantly improve your overall health. Instead, try to satisfy your sweet cravings with fresh fruits or healthier alternatives.
+            </div>
+        </div>
+        <div class="tip" onclick="toggleContent(4)">
+            <div>
+                <strong>Plan Your Meals:</strong>
+            </div>
+            <img src="https://i.pinimg.com/originals/3e/19/06/3e190681ba327d2ea7e056557d57b258.jpg" alt="Plan Meals">
+        </div>
+        <div class="content">
+            <img src="https://i.pinimg.com/originals/3e/19/06/3e190681ba327d2ea7e056557d57b258.jpg" alt="Plan Meals">
+            <div>
+                Preparing meals ahead of time can save you time and help you make healthier choices throughout the week. Meal planning reduces the temptation to eat out and ensures you have nutritious options readily available.
+            </div>
+        </div>
+    </div>
+
+    <h2>Additional Resources</h2>
+    <p>
+        For more information on nutrition, check out these helpful resources:
+    </p>
+    <ul>
+        <li><a href="https://www.choosemyplate.gov/">ChooseMyPlate.gov</a> - Offers resources for healthy eating and meal planning.</li>
+        <li><a href="https://www.eatright.org/">Academy of Nutrition and Dietetics</a> - Provides expert advice on nutrition and health.</li>
+        <li><a href="https://www.nutrition.gov/">Nutrition.gov</a> - A government resource for dietary information.</li>
+    </ul>
+
+    <a href="slideshow.html" class="next-button" style="display: block; text-align: center; margin-top: 20px; padding: 10px 20px; background-color: #4682B4; color: white; border-radius: 5px; text-decoration: none;">Next: Image Slideshow</a>
+</div>
+
+</body>
+</html>

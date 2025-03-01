@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            background-image: url('https://wallpaperaccess.com/full/1924546.jpg');
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        input, button, select, textarea {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #00796b;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005a4f;
+        }
+        .hidden {
+            display: none;
+        }
+        .info-box {
+            text-align: left;
+            background: #e0f7fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .view-appointments-btn {
+            background: #004085;
+            margin-top: 20px;
+        }
+        .view-appointments-btn:hover {
+            background: #002752;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Patient Registration</h2>
+        
+        <label for="hospitalName">Hospital Name:</label>
+        <input type="text" id="hospitalName" placeholder="Enter Hospital Name" required>
+
+        <label for="doctorName">Doctor's Name:</label>
+        <input type="text" id="doctorName" placeholder="Enter Doctor Name" required>
+
+        <label for="patientName">Patient Name:</label>
+        <input type="text" id="patientName" placeholder="Enter Patient Name" required>
+
+        <label for="gender">Gender:</label>
+        <select id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="patientAge">Age:</label>
+        <input type="number" id="patientAge" placeholder="Enter Age" required>
+
+        <label for="patientContact">Contact Number:</label>
+        <input type="text" id="patientContact" placeholder="Enter Contact Number" required>
+
+        <label for="patientEmail">Email:</label>
+        <input type="email" id="patientEmail" placeholder="Enter Email Address" required>
+
+        <label for="patientSymptoms">Symptoms:</label>
+        <input type="text" id="patientSymptoms" placeholder="Enter Symptoms" required>
+
+        <label for="appointmentTime">Requested Appointment Time:</label>
+        <select id="appointmentTime" required>
+            <option value="9:00 AM">9:00 AM</option>
+            <option value="10:00 AM">10:00 AM</option>
+            <option value="11:00 AM">11:00 AM</option>
+            <option value="1:00 PM">1:00 PM</option>
+            <option value="3:00 PM">3:00 PM</option>
+            <option value="5:00 PM">5:00 PM</option>
+        </select>
+
+        <textarea id="comments" placeholder="Additional Comments (Optional)"></textarea>
+
+        <button id="appointmentBtn">Make Appointment</button>
+        <button id="viewAppointmentsBtn">View Appointments</button>
+
+        <!-- Appointment Confirmation Box -->
+        <div id="appointmentDetails" class="info-box hidden">
+            <h2>Appointment Confirmed</h2>
+            <p><strong>Hospital Name:</strong> <span id="confirmHospital"></span></p>
+            <p><strong>Doctor:</strong> <span id="confirmDoctor"></span></p>
+            <p><strong>Patient Name:</strong> <span id="confirmPatientName"></span></p>
+            <p><strong>Gender:</strong> <span id="confirmGender"></span></p>
+            <p><strong>Age:</strong> <span id="confirmPatientAge"></span></p>
+            <p><strong>Contact:</strong> <span id="confirmPatientContact"></span></p>
+            <p><strong>Email:</strong> <span id="confirmPatientEmail"></span></p>
+            <p><strong>Symptoms:</strong> <span id="confirmSymptoms"></span></p>
+            <p><strong>Requested Time:</strong> <span id="confirmRequestedTime"></span></p>
+            <p><strong>Comments:</strong> <span id="confirmComments"></span></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("appointmentBtn").addEventListener("click", async function () {
+            const hospitalName = document.getElementById("hospitalName").value;
+            const doctorName = document.getElementById("doctorName").value;
+            const patientName = document.getElementById("patientName").value;
+            const gender = document.getElementById("gender").value;
+            const patientAge = document.getElementById("patientAge").value;
+            const patientContact = document.getElementById("patientContact").value;
+            const patientEmail = document.getElementById("patientEmail").value;
+            const patientSymptoms = document.getElementById("patientSymptoms").value;
+            const requestedTime = document.getElementById("appointmentTime").value;
+            const comments = document.getElementById("comments").value;
+
+            if (!hospitalName || !doctorName || !patientName || !patientAge || !patientContact || !patientEmail || !patientSymptoms || !requestedTime) {
+                alert("Please fill in all details before making an appointment.");
+                return;
+            }
+
+            // Display confirmation on the page
+            document.getElementById("confirmHospital").textContent = hospitalName;
+            document.getElementById("confirmDoctor").textContent = doctorName;
+            document.getElementById("confirmPatientName").textContent = patientName;
+            document.getElementById("confirmGender").textContent = gender;
+            document.getElementById("confirmPatientAge").textContent = patientAge;
+            document.getElementById("confirmPatientContact").textContent = patientContact;
+            document.getElementById("confirmPatientEmail").textContent = patientEmail;
+            document.getElementById("confirmSymptoms").textContent = patientSymptoms;
+            document.getElementById("confirmRequestedTime").textContent = requestedTime;
+            document.getElementById("confirmComments").textContent = comments || "No additional comments";
+
+            document.getElementById("appointmentDetails").classList.remove("hidden");
+
+            // Send data to MongoDB
+            try {
+                const response = await fetch("http://localhost:5001/api/appointments/add", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ hospitalName, doctorName, patientName, gender, patientAge, patientContact, patientEmail, patientSymptoms, requestedTime, comments })
+                });
+
+                const data = await response.json();
+                alert(data.message);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+
+        document.getElementById("viewAppointmentsBtn").addEventListener("click", function () {
+            window.location.href = "appointments.html";
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Health Campaigns</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://wallpaperaccess.com/full/1924546.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 90%;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        img {
+            width: 100px;
+            height: auto;
+            border-radius: 5px;
+            display: block;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #dc3545;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Registered Health Campaigns</h2>
+        <p id="error-message" class="error-message"></p>
+        <table id="campaignTable">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Organizer</th>
+                    <th>Contact</th>
+                    <th>Attendees</th>
+                    <th>Address</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be inserted here dynamically -->
+            </tbody>
+        </table>
+
+        <button class="back-btn" onclick="goBack()">Back to Submit Form</button>
+    </div>
+
+    <script>
+        function fetchCampaigns() {
+            fetch("http://localhost:5002/get-campaigns")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch campaigns.");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const tableBody = document.querySelector("#campaignTable tbody");
+                    tableBody.innerHTML = "";
+
+                    if (data.length === 0) {
+                        document.getElementById("error-message").textContent = "No campaigns found.";
+                        return;
+                    }
+
+                    data.forEach(campaign => {
+                        const imageUrl = campaign.image ? `http://localhost:5002${campaign.image}` : "default-placeholder.jpg";
+
+                        const row = `
+                            <tr>
+                                <td>${campaign.title}</td>
+                                <td>${campaign.description}</td>
+                                <td>${campaign.date}</td>
+                                <td>${campaign.startTime}</td>
+                                <td>${campaign.endTime}</td>
+                                <td>${campaign.organizer || "N/A"}</td>
+                                <td>${campaign.organizerContact || "N/A"}</td>
+                                <td>${campaign.attendees || "N/A"}</td>
+                                <td>${campaign.address}</td>
+                                <td><img src="${imageUrl}" alt="Campaign Image"></td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching campaigns:", error);
+                    document.getElementById("error-message").textContent = "Error fetching campaigns. Please try again later.";
+                });
+        }
+
+        function goBack() {
+            window.location.href = "health-campaign-form.html";
+        }
+
+        // Fetch campaigns when page loads
+        fetchCampaigns();
+    </script>
+
+</body>
+</html>
