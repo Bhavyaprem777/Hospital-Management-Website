@@ -3,229 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Hospital & Doctor</title>
+    <title>Select a Hospital</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             background-color: #f4f4f9;
+            text-align: center;
+            margin: 0;
+            padding: 0;
             background-image: url('https://wallpaperaccess.com/full/1924546.jpg');
         }
-        .container {
-            width: 50%;
-            margin: auto;
-            padding: 20px;
-            background: white;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-        select, button {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background: #00796b;
+        h2 {
+            background: linear-gradient(135deg, #007bff, #00c6ff);
             color: white;
-            border: none;
-            cursor: pointer;
+            padding: 20px;
+            margin: 0;
+            font-size: 24px;
+            text-transform: uppercase;
         }
-        button:hover {
-            background: #005a4f;
-        }
-        .hidden { display: none; }
-        .info-box {
-            text-align: left;
-            background: #e0f7fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
+      #hospitalList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.hospital-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 15px 0;
+    width: 60%; /* Use almost full screen width */
+    max-width: 60%; /* Limit max width for readability */
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.hospital-card:hover {
+    transform: scale(1.02);
+}
+
+img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hospital-details {
+    padding: 15px;
+    text-align: left;
+}
+
+.hospital-details h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+    font-size: 22px;
+    text-align: center;
+}
+
+.hospital-details p {
+    font-size: 16px;
+    margin: 5px 0;
+    color: #333;
+}
+
+.hospital-details a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.hospital-details a:hover {
+    text-decoration: underline;
+}
+
+.doctor-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.3s;
+    margin-top: 15px;
+}
+
+.doctor-button:hover {
+    background-color: #0056b3;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Select a Hospital</h2>
-        <select id="hospitalSelect">
-            <option value="">-- Select a Hospital --</option>
-            <option value="hospital1">City Hospital</option>
-            <option value="hospital2">Green Valley Hospital</option>
-            <option value="hospital3">Sunrise Medical Center</option>
-            <option value="hospital4">Hope Care Hospital</option>
-            <option value="hospital5">Metro Health Clinic</option>
-        </select>
-
-        <div id="hospitalDetails" class="info-box hidden">
-            <h3 id="hospitalName"></h3>
-            <p><strong>Address:</strong> <span id="hospitalAddress"></span></p>
-            <p><strong>Phone:</strong> <span id="hospitalPhone"></span></p>
-            <p><strong>Email:</strong> <span id="hospitalEmail"></span></p>
-            <p><strong>Opening Time:</strong> <span id="openingTime"></span></p>
-            <p><strong>Closing Time:</strong> <span id="closingTime"></span></p>
-        </div>
-
-        <h2>Select a Doctor</h2>
-        <select id="doctorSelect" class="hidden">
-            <option value="">-- Select a Doctor --</option>
-        </select>
-
-        <div id="doctorDetails" class="info-box hidden">
-            <h3 id="doctorName"></h3>
-            <p><strong>Specialization:</strong> <span id="doctorSpecialization"></span></p>
-            <p><strong>Experience:</strong> <span id="doctorExperience"></span> years</p>
-            <p><strong>Consultation Fee:</strong> ₹<span id="doctorFee"></span></p>
-        </div>
-
-        <!-- Make Appointment Button -->
-        <a id="makeAppointmentBtn" href="register-patient.html" class="hidden">
-            <button>Make Appointment</button>
-        </a>
-
-    </div>
+    <h2>Select a Hospital</h2>
+    <div id="hospitalList"></div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const hospitalSelect = document.getElementById("hospitalSelect");
-            const doctorSelect = document.getElementById("doctorSelect");
-            const makeAppointmentBtn = document.getElementById("makeAppointmentBtn");
-            const hospitalDetails = document.getElementById("hospitalDetails");
-            const doctorDetails = document.getElementById("doctorDetails");
+       async function fetchHospitals() {
+    try {
+        const response = await fetch("http://localhost:5013/api/hospitals");
+        
+        if (!response.ok) {
+            throw new Error("Failed to fetch hospitals");
+        }
+        
+        const hospitals = await response.json();
+        const hospitalList = document.getElementById("hospitalList");
 
-            const hospitalNameElem = document.getElementById("hospitalName");
-            const hospitalAddressElem = document.getElementById("hospitalAddress");
-            const hospitalPhoneElem = document.getElementById("hospitalPhone");
-            const hospitalEmailElem = document.getElementById("hospitalEmail");
-            const openingTimeElem = document.getElementById("openingTime");
-            const closingTimeElem = document.getElementById("closingTime");
+        hospitalList.innerHTML = hospitals.map(hospital => `
+            <div class="hospital-card">
+                <img src="${hospital.image}" alt="${hospital.name}">
+                <div class="hospital-details">
+                    <h3>${hospital.name}</h3>
+                    <p><b>Address:</b> ${hospital.address}</p>
+                    <p><b>Contact:</b> ${hospital.contact}</p>
+                    <p><b>Email:</b> ${hospital.email}</p>
+                    <p><b>Website:</b> <a href="${hospital.website}" target="_blank">${hospital.website}</a></p>
+                    <p><b>Opening Time:</b> ${hospital.openingTime}</p>
+                    <p><b>Closing Time:</b> ${hospital.closingTime}</p>
+                    <p><b>Services:</b> ${hospital.services.join(", ")}</p>
+                    <button class="doctor-button" onclick="viewDoctors('${hospital._id}')">View Doctors</button>
+                </div>
+            </div>
+        `).join("");
+    } catch (error) {
+        console.error("Error fetching hospitals:", error);
+        document.getElementById("hospitalList").innerHTML = `<p style="color: red;">Failed to load hospitals. Please try again later.</p>`;
+    }
+}
 
-            const doctorNameElem = document.getElementById("doctorName");
-            const doctorSpecializationElem = document.getElementById("doctorSpecialization");
-            const doctorExperienceElem = document.getElementById("doctorExperience");
-            const doctorFeeElem = document.getElementById("doctorFee");
+        function viewDoctors(hospitalId) {
+            window.location.href = `doctor-details.html?hospitalId=${hospitalId}`;
+        }
 
-            const hospitals = {
-                "hospital1": {
-                    name: "City Hospital",
-                    address: "123 Main St, Mumbai",
-                    phone: "9876543210",
-                    email: "info@cityhospital.com",
-                    opening: "08:00 AM",
-                    closing: "10:00 PM",
-                    doctors: {
-                       "doc1": { name: "Dr. Anil", specialization: "Cardiologist", experience: 10, fee: 500 },
-                       "doc2": { name: "Dr. Bhavani", specialization: "Neurologist", experience: 8, fee: 600 },
-                       "doc3": { "name": "Dr. Amulya", "specialization":"ENT Specialist", "experience": 10, "fee": 500 },
-                       "doc4": { "name": "Dr. Sukanya", "specialization": "Pediatrician", "experience": 8, "fee": 600 },
-                       "doc5": { "name": "Dr. Chanukya", "specialization": "Orthopedic", "experience": 12, "fee": 700 },
-                       "doc6": { "name": "Dr. Devaki", "specialization": "General Physician", "experience": 15, "fee": 400 }
-                    }
-                },
-                "hospital2": {
-                    name: "Green Valley Hospital",
-                    address: "456 Green Rd, Delhi",
-                    phone: "9123456789",
-                    email: "contact@greenvalley.com",
-                    opening: "09:00 AM",
-                    closing: "09:00 PM",
-                    doctors: {
-                       "doc7": { name: "Dr. Krishna", specialization: "Orthopedic", experience: 12, fee: 700 },
-                       "doc8": { name: "Dr. Divya Sri", specialization: "Pediatrician", experience: 15, fee: 400 },
-                       "doc9": { "name": "Dr. Meghana", "specialization": "Dermatologist", "experience": 9, "fee": 550 },
-                       "doc10": { "name": "Dr. Aanand", "specialization": "Pediatrician", "experience": 14, "fee": 300 },
-                       "doc11": { "name": "Dr. Giri Verma", "specialization": "ENT Specialist", "experience": 11, "fee": 450 },
-                       "doc12": { "name": "Dr. Hari Kumar", "specialization": "General Physician", "experience": 10, "fee": 500 }
-                    }
-                },
-                "hospital3": {
-                    name: "Sunrise Medical Center",
-                    address: "789 Sunrise Rd, Bangalore",
-                    phone: "9988776655",
-                    email: "sunrise@hospital.com",
-                    opening: "07:00 AM",
-                    closing: "11:00 PM",
-                    doctors: {
-                       "doc13": { name: "Dr. Sujitha", specialization: "Dermatologist", experience: 9, fee: 550 },
-                       "doc14": { name: "Dr. Vani Sri", specialization: "General Physician", experience: 14, fee: 300 },
-                       "doc15": { "name": "Dr. Indhu", "specialization": "Gastroenterologist", "experience": 16, "fee": 750 },
-                       "doc16": { "name": "Dr. Jathin", "specialization": "Oncologist", "experience": 18, "fee": 1000 },
-                       "doc17": { "name": "Dr. Kishore Nkumar", "specialization": "Nephrologist", "experience": 13, "fee": 650 },
-                       "doc18": { "name": "Dr. Lalitha", "specialization": "General Physician", "experience": 8, "fee": 450 }
-                    }
-                },
-                "hospital4": {
-                    name: "Hope Care Hospital",
-                    address: "100 Hope Street, Chennai",
-                    phone: "9012345678",
-                    email: "hope@hospital.com",
-                    opening: "06:00 AM",
-                    closing: "08:00 PM",
-                    doctors: {
-                       "doc19": { name: "Dr. Govind Raj", specialization: "ENT Specialist", experience: 11, fee: 450 },
-                       "doc20": { name: "Dr. Ravi Kiran", specialization: "Psychiatrist", experience: 7, fee: 600 },
-                       "doc21": { "name": "Dr. Kalyan", "specialization": "Urologist", "experience": 10, "fee": 700 },
-                       "doc22": { "name": "Dr. Nandha Gopal", "specialization": "Endocrinologist", "experience": 12, "fee": 600 },
-                       "doc23": { "name": "Dr. vaishnavi", "specialization": "Pulmonologist", "experience": 9, "fee": 550 },
-                       "doc24": { "name": "Dr. Pushpa", "specialization": "General Physician", "experience": 11, "fee": 500 }
-                    }
-                },
-                "hospital5": {
-                    name: "Metro Health Clinic",
-                    address: "22 Metro Road, Hyderabad",
-                    phone: "8111223344",
-                    email: "metro@clinic.com",
-                    opening: "10:00 AM",
-                    closing: "09:00 PM",
-                    doctors: {
-                        "doc25": { name: "Dr. Indraja", specialization: "Gastroenterologist", experience: 16, fee: 750 },
-                        "doc26": { name: "Dr. Jagadeesh", specialization: "Oncologist", experience: 18, fee: 1000 },
-                        "doc27": { "name": "Dr. Vasundhara", "specialization": "Psychiatrist", "experience": 15, "fee": 800 },
-                        "doc28": { "name": "Dr. Raghava Krishna", "specialization": "Hematologist", "experience": 10, "fee": 600 },
-                        "doc29": { "name": "Dr. Sumathi", "specialization": "Rheumatologist", "experience": 14, "fee": 750 },
-                        "doc30": { "name": "Dr. Tharun Kumar", "specialization": "General Physician", "experience": 12, "fee": 550 }
-                    }
-                }
-            };
-
-            hospitalSelect.addEventListener("change", function() {
-                const hospital = hospitals[this.value];
-                if (!hospital) return;
-
-                hospitalNameElem.textContent = hospital.name;
-                hospitalAddressElem.textContent = hospital.address;
-                hospitalPhoneElem.textContent = hospital.phone;
-                hospitalEmailElem.textContent = hospital.email;
-                openingTimeElem.textContent = hospital.opening;
-                closingTimeElem.textContent = hospital.closing;
-                hospitalDetails.classList.remove("hidden");
-
-                doctorSelect.innerHTML = '<option value="">-- Select a Doctor --</option>';
-                for (let id in hospital.doctors) {
-                    const doc = hospital.doctors[id];
-                    doctorSelect.innerHTML += `<option value="${id}">${doc.name}</option>`;
-                }
-                doctorSelect.classList.remove("hidden");
-                doctorDetails.classList.add("hidden");
-                makeAppointmentBtn.classList.add("hidden");
-            });
-
-            doctorSelect.addEventListener("change", function() {
-                const hospital = hospitals[hospitalSelect.value];
-                const doctor = hospital?.doctors[this.value];
-                if (!doctor) return;
-
-                doctorNameElem.textContent = doctor.name;
-                doctorSpecializationElem.textContent = doctor.specialization;
-                doctorExperienceElem.textContent = doctor.experience;
-                doctorFeeElem.textContent = doctor.fee;
-
-                doctorDetails.classList.remove("hidden");
-                makeAppointmentBtn.classList.remove("hidden");
-            });
-        });
+        fetchHospitals();
     </script>
 
 </body>

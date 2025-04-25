@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://wallpaperaccess.com/full/1924546.jpg');
+ h2 {
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            color: white;
+            padding: 20px;
+            margin: 0;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+        #doctorList {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .doctor-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            margin: 15px;
+            width: 60%;
+            max-width: 600px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+        .doctor-card:hover {
+            transform: scale(1.02);
+        }
+        img {
+            width: 40%;
+            height: 40%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .doctor-details {
+            padding: 10px 0;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+      </head>
+<body>
+
+    <h2>Doctor Details</h2>
+    <div id="doctorList"></div>
+
+    <script>
+        async function fetchDoctors() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hospitalId = urlParams.get("hospitalId");
+            const response = await fetch(`http://localhost:5013/api/doctors/${hospitalId}`);
+            const doctors = await response.json();
+            const doctorList = document.getElementById("doctorList");
+
+            if (doctors.length === 0) {
+                doctorList.innerHTML = "<p>No doctors available for this hospital.</p>";
+                return;
+            }
+
+            doctorList.innerHTML = doctors.map(doctor => `
+                <div class="doctor-card">
+                    <img src="${doctor.image}" alt="${doctor.name}">
+                    <div class="doctor-details">
+                        <h3>${doctor.name}</h3>
+                        <p><b>Specialization:</b> ${doctor.specialization}</p>
+                        <p><b>Experience:</b> ${doctor.experience} years</p>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        fetchDoctors();
+    </script>
+<button onclick="window.location.href='register-patient.html'" 
+        style="background-color: #28a745; color: white; padding: 10px 20px; 
+               font-size: 16px; border: none; border-radius: 6px; 
+               cursor: pointer; margin-top: 20px;">
+    Register a Patient
+</button>
+
+
+</body>
+</html>
