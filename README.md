@@ -22,6 +22,7 @@ A simple web app to manage hospitals and provide health-related updates.
 2.Install dependencies - npm install
 3.Start the app
        npm start
-
+4. Live Demo (ONLY FRONTEND): https://hospital-management-website-kappa.vercel.app/
+5.Video Demo: https://drive.google.com/file/d/1aTgXhJ2HGoeytixuiXCwQVlJ_aGggOV7/view
 
 
